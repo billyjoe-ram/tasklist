@@ -19,8 +19,8 @@ class TarefaService {
         $stmt->execute();
     }
 
-    public function recuperar($tarefa) {
-        echo $tarefa;
+    public function recuperar() {
+        echo "Recuperando";
     }
 
     public function atualizar($tarefa) {

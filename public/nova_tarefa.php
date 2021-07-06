@@ -19,6 +19,18 @@
 			</div>
 		</nav>
 
+		<?php
+			/* Se -> 1. Existir o GET incluido, existir o POST tarefa (o formulário tiver sido enviado),
+			e o GET incluido for 1 */
+			if (isset($_GET['incluido']) && isset($_POST['tarefa']) && $_GET['incluido'] == 1) {
+				return 
+					'<div class="bg-success pt-2 text-white d-flex justify-content-center">
+						<h5>Tarefa inserida com sucesso!</h5>
+					</div>'
+				;
+			}
+		?>		
+
 		<div class="container app">
 			<div class="row">
 				<div class="col-md-3 menu">
@@ -36,7 +48,7 @@
 								<h4>Nova tarefa</h4>
 								<hr />
 
-								<form method="post" action="tarefa_controller.php">
+								<form method="post" action="tarefa_controller.php?acao=inserir">
 									<div class="form-group">
 										<label>Descrição da tarefa:</label>
 										<input type="text" class="form-control" name="tarefa" placeholder="Exemplo: Lavar o carro">
