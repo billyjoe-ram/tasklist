@@ -2,9 +2,9 @@
 
 class DbConnec {
     private $host = 'localhost';
-    private $nm_db = '';
-    private $user = '';
-    private $pass = '';
+    private $nm_db = 'php_tasklist';
+    private $user = 'dev';
+    private $pass = 'DevelopingInPHP.7';
 
     public function conectar() {
         try {
