@@ -22,8 +22,8 @@
 		<?php
 			/* Se -> 1. Existir o GET incluido, existir o POST tarefa (o formulário tiver sido enviado),
 			e o GET incluido for 1 */
-			if (isset($_GET['incluido']) && isset($_POST['tarefa']) && $_GET['incluido'] == 1) {
-				return 
+			if (isset($_GET['incluido']) && $_GET['incluido'] == 1) {
+				echo
 					'<div class="bg-success pt-2 text-white d-flex justify-content-center">
 						<h5>Tarefa inserida com sucesso!</h5>
 					</div>'
