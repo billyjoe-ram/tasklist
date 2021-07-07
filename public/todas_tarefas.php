@@ -46,13 +46,13 @@ require './tarefa_controller.php';
 							foreach ($tarefas as $indice => $tarefa) {
 							?>
 								<div class="row mb-3 d-flex align-items-center tarefa">
-									<div class="col-sm-9">
-										<?= /* É aqui que a tarefa em si vai aparecer*/  $tarefa->tarefa ?>
-										(<?= /* É aqui que o status da tarefa vai aparecer*/  $tarefa->status ?>)
+									<div class="col-sm-9" id="tarefa_<?= $tarefa->id; ?>">
+										<?= /* É aqui que a tarefa em si vai aparecer*/ $tarefa->tarefa ?>
+										(<?= /* É aqui que o status da tarefa vai aparecer*/ $tarefa->status ?>)
 									</div>
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
 										<i class="fas fa-trash-alt fa-lg text-danger"></i>
-										<i class="fas fa-edit fa-lg text-info"></i>
+										<i class="fas fa-edit fa-lg text-info" onclick="editar(<?= $tarefa->id ?>)" style="cursor: pointer;"></i>
 										<i class="fas fa-check-square fa-lg text-success"></i>
 									</div>
 								</div>
@@ -66,6 +66,76 @@ require './tarefa_controller.php';
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function editar(idTarefa) {			
+			// Verificando se o form que eu vou criar já existe (!= null)
+			// Caso sim, não faz nada
+			if (!document.getElementById('form-editar-tarefa')) {
+				// Criando form de edição programaticamente
+				let formEditaTarefa = document.createElement("form");
+				formEditaTarefa.action = "#";
+				formEditaTarefa.method = "post";
+				formEditaTarefa.className = "form-group row";
+				// Esse id é para eu checar futuramente caso o elemento exista ou não
+				formEditaTarefa.id = "form-editar-tarefa";
+
+				// Criando uma label para o input seguinte
+				let labelInputTarefa = document.createElement("label");
+				labelInputTarefa.for = "tarefa";
+				labelInputTarefa.innerHTML = "Edite sua tarefa";
+				labelInputTarefa.style = "width: 100%;";
+
+				// Criando um input para entrada do texto
+				let inputTarefa = document.createElement("input");
+				inputTarefa.type = "text";
+				inputTarefa.name = "tarefa";
+				inputTarefa.id = "tarefa";
+				inputTarefa.className = "col-8 form-control";
+
+				// Criando um input escondido para receber no post
+				let inputIdTarefa = document.createElement("input");
+				inputIdTarefa.type = "hidden";
+				inputIdTarefa.name = "id";
+				inputIdTarefa.value = idTarefa;
+
+				// Criando um botão programaticamente
+				let btnEnviarFormEdita = document.createElement("button");
+				btnEnviarFormEdita.type = "submit";
+				btnEnviarFormEdita.className = "btn btn-info col-3 offset-1";
+				btnEnviarFormEdita.innerHTML = "Atualizar"
+
+				// Incluindo labelInputTarefa no formEditaTarefa
+				formEditaTarefa.appendChild(labelInputTarefa);
+
+				// Incluindo inputTarefa no formEditaTarefa
+				formEditaTarefa.appendChild(inputTarefa);
+
+				formEditaTarefa.appendChild(inputIdTarefa);
+
+				// Incluindo botão submit no formEditaTarefa
+				formEditaTarefa.appendChild(btnEnviarFormEdita);
+
+				// Selecionar div tarefa
+				let divTarefaSelec = document.querySelector("#tarefa_" + idTarefa);
+
+				// Obtendo o antigo valor do input na div;
+
+				// Seleciono o conteúdo interno, separo onde tem o '(' (antes do status),
+				// pego o primeiro índice e então retiro espaços em branco
+				let valorInputTarefa = divTarefaSelec.innerHTML.split('(')[0].trim();
+
+				// Adicionando esse valor de input ao input de tarefas antes de inserir na div
+				inputTarefa.value = valorInputTarefa;
+
+				// Limpando conteúdo interno da div
+				divTarefaSelec.innerHTML = "";
+
+				// Adicionando o form à div
+				divTarefaSelec.insertBefore(formEditaTarefa, divTarefaSelec[0]);
+			}
+		}
+	</script>
 </body>
 
 </html>
