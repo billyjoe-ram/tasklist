@@ -36,8 +36,16 @@ class TarefaService {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function atualizar($tarefa) {
-        echo $tarefa;
+    public function atualizar() {
+        $query = 'update tb_tarefas set tarefa = :tarefa where id = :id';
+
+        // Não esqueça que é esse statemente do PDO que vai ajudar a prevenir SQL Injection
+        $stmt = $this->conexao->prepare($query);
+
+        $stmt->bindValue(":tarefa", $this->tarefa->__get("tarefa"));
+        $stmt->bindValue(":id", $this->tarefa->__get("id"));
+
+        return $stmt->execute();
     }
 
     public function remover($tarefa) {

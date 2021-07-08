@@ -1,6 +1,7 @@
 <?php
 
 class DbConnec {
+    // Salvei algumas configurações padrão, você pode alterar isso no seu arquivo caso queira
     private $host = 'localhost';
     private $nm_db = 'php_tasklist';
     private $user = 'dev';

@@ -74,7 +74,7 @@ require './tarefa_controller.php';
 			if (!document.getElementById('form-editar-tarefa')) {
 				// Criando form de edição programaticamente
 				let formEditaTarefa = document.createElement("form");
-				formEditaTarefa.action = "#";
+				formEditaTarefa.action = "tarefa_controller.php?acao=atualizar";
 				formEditaTarefa.method = "post";
 				formEditaTarefa.className = "form-group row";
 				// Esse id é para eu checar futuramente caso o elemento exista ou não
