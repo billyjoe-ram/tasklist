@@ -1,5 +1,5 @@
 <?php
-require './tarefa_controller.php';
+	require './tarefa_controller.php';
 ?>
 
 <html>
@@ -30,7 +30,7 @@ require './tarefa_controller.php';
 				<ul class="list-group">
 					<li class="list-group-item"><a href="index.php">Tarefas pendentes</a></li>
 					<li class="list-group-item"><a href="nova_tarefa.php">Nova tarefa</a></li>
-					<li class="list-group-item active"><a href="#">Todas tarefas</a></li>
+					<li class="list-group-item active"><a href="todas_tarefas.php">Todas tarefas</a></li>
 				</ul>
 			</div>
 
