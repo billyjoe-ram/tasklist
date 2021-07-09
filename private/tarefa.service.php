@@ -48,7 +48,25 @@ class TarefaService {
         return $stmt->execute();
     }
 
-    public function remover($tarefa) {
-        echo $tarefa;
+    public function remover() {
+        $query = "delete from tb_tarefas where id = :id";
+
+        $stmt = $this->conexao->prepare($query);
+
+        $stmt->bindValue(":id", $this->tarefa->__get("id"));
+
+        return $stmt->execute();
+    }
+
+    public function concluir() {
+        $query = 'update tb_tarefas set id_status = :id_status where id = :id';
+
+        // Não esqueça que é esse statemente do PDO que vai ajudar a prevenir SQL Injection
+        $stmt = $this->conexao->prepare($query);
+
+        $stmt->bindValue(":id_status", $this->tarefa->__get("id_status"));
+        $stmt->bindValue(":id", $this->tarefa->__get("id"));
+
+        return $stmt->execute();
     }
 }

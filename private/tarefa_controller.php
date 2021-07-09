@@ -52,7 +52,42 @@ switch ($acao) {
         if ($processoAtualizarNoDB) {
             header('Location: todas_tarefas.php');
         } else {
-            throw new Exception("Não foi possível realizar a requisição", 0);
+            throw new Exception("Não foi possível atualizar a tarefa", 0);
         }
+    break;
+    case 'remover';
+        $tarefa->__set('id', $_GET['id']);
+
+        // Instanciando serviço
+        $tarefa_service = new TarefaService($db_conn, $tarefa);
+
+        $processoAtualizarNoDB = $tarefa_service->remover();
+
+        // Verificando se deu sucesso
+        if ($processoAtualizarNoDB) {
+            header('Location: todas_tarefas.php');
+        } else {
+            throw new Exception("Não foi possível remover a tarefa", 0);
+        }
+    break;
+    case 'concluir';
+        $tarefa->__set('id', $_GET['id']);
+        // Atualizando status para concluído
+        $tarefa->__set('id_status', 2);            
+
+        // Instanciando serviço
+        $tarefa_service = new TarefaService($db_conn, $tarefa);        
+
+        $processoAtualizarNoDB = $tarefa_service->concluir();        
+
+        // Verificando se deu sucesso
+        if ($processoAtualizarNoDB) {
+            header('Location: todas_tarefas.php');
+        } else {
+            throw new Exception("Não foi possível concluir a tarefa", 0);
+        }
+    break;
+    default:
+        header('Location: todas_tarefas.php');
     break;
 }

@@ -40,25 +40,62 @@ require './tarefa_controller.php';
 						<div class="col">
 							<h4>Todas tarefas</h4>
 							<hr />
+														
+							<?php
+								// Todo esse abre fecha abre fecha de tags php pode parecer
+								// confuso, mas imagine que toda vez que preciso inserir
+								// HTML, eu preciso fechar a tag PHP que você vai entender.
+								// Caso não, tente deixar apenas a primeira tag php em tela
+								// (com seu respectivo fechamento), e apagar o HTML, aí sim
+								// com certeza você vai entender o que está acontecendo
 
+								// Verificando se existem itens no array de tarefas
+								if (count($tarefas)) {
+									// Abrindo foreach
+										foreach ($tarefas as $indice => $tarefa) {
+										?>
+											<div class="row mb-3 d-flex align-items-center tarefa">
+												<div class="col-sm-9" id="tarefa_<?= $tarefa->id; ?>">
+													<?= /* É aqui que a tarefa em si vai aparecer*/ $tarefa->tarefa ?>
+													(<?= /* É aqui que o status da tarefa vai aparecer*/ $tarefa->status ?>)
+												</div>
+												<div class="col-sm-3 mt-2 d-flex justify-content-between">
+													<?php
+														if ($tarefa->status == 'pendente') {
+															?>
+														<i class="fas fa-edit fa-lg text-info"
+															onclick="editar(<?= $tarefa->id ?>)"
+															style="cursor: pointer;">
+														</i>
+														<i class="fas fa-check-square fa-lg text-success"
+															onclick="marcarConcluída(<?= $tarefa->id ?>)"
+															style="cursor: pointer;">
+														</i>
+													<?php
+														}
+													?>
+													<i class="fas fa-trash-alt fa-lg text-danger"
+														onclick="remover(<?= $tarefa->id ?>)"
+														style="cursor: pointer;">
+													</i>
+												</div>
+											</div>									
+									<?php
+										// Fechando foreach
+										}
+									?>
 							<?php
-							// Abrindo foreach
-							foreach ($tarefas as $indice => $tarefa) {
-							?>
-								<div class="row mb-3 d-flex align-items-center tarefa">
-									<div class="col-sm-9" id="tarefa_<?= $tarefa->id; ?>">
-										<?= /* É aqui que a tarefa em si vai aparecer*/ $tarefa->tarefa ?>
-										(<?= /* É aqui que o status da tarefa vai aparecer*/ $tarefa->status ?>)
-									</div>
-									<div class="col-sm-3 mt-2 d-flex justify-content-between">
-										<i class="fas fa-trash-alt fa-lg text-danger"></i>
-										<i class="fas fa-edit fa-lg text-info" onclick="editar(<?= $tarefa->id ?>)" style="cursor: pointer;"></i>
-										<i class="fas fa-check-square fa-lg text-success"></i>
-									</div>
-								</div>
+								} else {
+									?>
+										<div class="row">
+											<div class="col-12 text-center">
+												<div class="alert alert-info">
+													Não há nenhum item na lista de tarefas
+												</div>
+											</div>
+										</div>
 							<?php
-								// Fechando foreach
-							}
+								}
 							?>
 						</div>
 					</div>
@@ -73,7 +110,7 @@ require './tarefa_controller.php';
 			// Caso sim, não faz nada
 			if (!document.getElementById('form-editar-tarefa')) {
 				// Criando form de edição programaticamente
-				let formEditaTarefa = document.createElement("form");
+				const formEditaTarefa = document.createElement("form");
 				formEditaTarefa.action = "tarefa_controller.php?acao=atualizar";
 				formEditaTarefa.method = "post";
 				formEditaTarefa.className = "form-group row";
@@ -81,26 +118,26 @@ require './tarefa_controller.php';
 				formEditaTarefa.id = "form-editar-tarefa";
 
 				// Criando uma label para o input seguinte
-				let labelInputTarefa = document.createElement("label");
+				const labelInputTarefa = document.createElement("label");
 				labelInputTarefa.for = "tarefa";
 				labelInputTarefa.innerHTML = "Edite sua tarefa";
 				labelInputTarefa.style = "width: 100%;";
 
 				// Criando um input para entrada do texto
-				let inputTarefa = document.createElement("input");
+				const inputTarefa = document.createElement("input");
 				inputTarefa.type = "text";
 				inputTarefa.name = "tarefa";
 				inputTarefa.id = "tarefa";
 				inputTarefa.className = "col-8 form-control";
 
 				// Criando um input escondido para receber no post
-				let inputIdTarefa = document.createElement("input");
+				const inputIdTarefa = document.createElement("input");
 				inputIdTarefa.type = "hidden";
 				inputIdTarefa.name = "id";
 				inputIdTarefa.value = idTarefa;
 
 				// Criando um botão programaticamente
-				let btnEnviarFormEdita = document.createElement("button");
+				const btnEnviarFormEdita = document.createElement("button");
 				btnEnviarFormEdita.type = "submit";
 				btnEnviarFormEdita.className = "btn btn-info col-3 offset-1";
 				btnEnviarFormEdita.innerHTML = "Atualizar"
@@ -117,13 +154,13 @@ require './tarefa_controller.php';
 				formEditaTarefa.appendChild(btnEnviarFormEdita);
 
 				// Selecionar div tarefa
-				let divTarefaSelec = document.querySelector("#tarefa_" + idTarefa);
+				const divTarefaSelec = document.querySelector("#tarefa_" + idTarefa);
 
 				// Obtendo o antigo valor do input na div;
 
 				// Seleciono o conteúdo interno, separo onde tem o '(' (antes do status),
 				// pego o primeiro índice e então retiro espaços em branco
-				let valorInputTarefa = divTarefaSelec.innerHTML.split('(')[0].trim();
+				const valorInputTarefa = divTarefaSelec.innerHTML.split('(')[0].trim();
 
 				// Adicionando esse valor de input ao input de tarefas antes de inserir na div
 				inputTarefa.value = valorInputTarefa;
@@ -134,6 +171,16 @@ require './tarefa_controller.php';
 				// Adicionando o form à div
 				divTarefaSelec.insertBefore(formEditaTarefa, divTarefaSelec[0]);
 			}
+		}
+
+		function remover(idTarefa) {
+			// Usando template string para JS moderno
+			location.href = `todas_tarefas.php?acao=remover&id=${idTarefa}`;
+		}
+
+		function marcarConcluída(idTarefa) {
+			// Usando template string para JS moderno
+			location.href = `todas_tarefas.php?acao=concluir&id=${idTarefa}`;
 		}
 	</script>
 </body>
